@@ -1,0 +1,11 @@
+{
+  "name": "gaunlenewsbackend",
+  "version": "1.0.0",
+  "description": "\"Gaunle News Backend\"",
+  "main": "server.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lokendra",
+  "license": "MIT"
+}
