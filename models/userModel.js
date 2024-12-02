@@ -13,6 +13,11 @@ const userSchema = mongoose.Schema(
         },
         password: {
             type: 'string',
+            required: true,
+            unique: true
+        },
+        phoneNumber: {
+            type: Number,
             required: true
         },
         isAdmin: {

@@ -23,17 +23,22 @@ const generateToken = (id) => {
  * 
  */
 const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  
+  const { name, email, password, phoneNumber } = req.body;
+  console.log("============backend in Register User=======");
+  console.log("Name: " + name + "Email: " + email + "Password: " + password+ "Phone Number: " + phoneNumber) ;
+
+
 
   //checking if the fields are empty
-  if(!name || !email || !password) {
+  if(!name || !email || !password || !phoneNumber) {
     return res.status(400).json({success: false, msg: "Lokendra All the fields are required"});
   }
 
   //checking if the user already exists
   const userExists = await User.findOne({email});
   if(userExists) {
-    return res.status(400).json({success: false, msg: "Lokendra User already exists"});
+    return res.status(401).json({success: false, msg: "Lokendra User already exists"});
   }
 
   //create and add user
@@ -41,6 +46,7 @@ const registerUser = async (req, res) => {
     name,
     email,
     password,
+    phoneNumber
   });
 
   if(user) {
@@ -53,10 +59,11 @@ const registerUser = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      phoneNumber: user.phoneNumber,
       token: generateToken(user._id),
     });
   } else {
-    res.status(400).json({success: false, msg: "Lokendra Invalid user data"});
+    res.status(402).json({success: false, msg: "Lokendra Invalid user data"});
   } 
 };
 
@@ -67,14 +74,18 @@ const registerUser = async (req, res) => {
    */
   const loginUser = async (req, res) => {
     const {email, password} = req.body;
+  console.log("============backend in Login User=============");
+  console.log( "Email: " + email + "Password: " + password) ;
+
     //checking if user is exists in database
     const user = await User.findOne({email});
 
     if(user && (await user.matchPassword(password))) {
-      res.json({
+      res.status(201).json({
         _id: user._id,
         name: user.name,
         email: user.email,
+        phoneNumber: user.phoneNumber,
         token: generateToken(user._id),
       });
     } else {
